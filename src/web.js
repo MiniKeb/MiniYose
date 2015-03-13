@@ -6,7 +6,8 @@ var app = express();
 app.use(logfmt.requestLogger());
 
 app.get('/', function(req, res) {
-  res.send('Hello Yose');
+  var html = '<html><head></head><body>Hello Yose <a id="repository-link" href="https://github.com/MiniKeb/MiniYose">Repository</a> </body></html>';
+  res.send(html);
 });
 
 app.get('/ping', function(request, response){
