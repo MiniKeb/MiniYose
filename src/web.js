@@ -10,6 +10,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/ping', function(request, response){
+  response.contentType("application/json");
   response.send('{ "alive" : true }')
 });
 
