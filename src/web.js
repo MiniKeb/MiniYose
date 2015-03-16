@@ -15,6 +15,20 @@ app.get('/ping', function(request, response){
   response.send('{ "alive" : true }')
 });
 
+app.get('/primeFactors', function(request, response){
+  var result = {
+    number: request.param("number"),
+    decomposition: []
+  };
+  var remain = result.number;
+  while(remain > 1){
+    remain = remain / 2;
+    result.decomposition.push(2);
+  }
+  response.contentType("application/json");
+  response.send(result);
+});
+
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
   console.log("Listening on " + port);
