@@ -17,13 +17,19 @@ app.get('/ping', function(request, response){
 
 app.get('/primeFactors', function(request, response){
   var result = {
-    number: request.param("number"),
-    decomposition: []
+    number: request.param("number")
   };
-  var remain = result.number;
-  while(remain > 1){
-    remain = remain / 2;
-    result.decomposition.push(2);
+  
+  if (isNaN(result.number))
+  {
+    result.error = "not a number";
+  }else{
+    result.decomposition = [];
+    var remain = result.number;
+    while(remain > 1){
+      remain = remain / 2;
+      result.decomposition.push(2);
+    }
   }
   response.contentType("application/json");
   response.send(result);
