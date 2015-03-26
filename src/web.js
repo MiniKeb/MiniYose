@@ -1,13 +1,13 @@
 // web.js
 var express = require("express");
 var mustacheExpress = require("mustache-express");
-var run = require(__dirname + "\\operations.js");
+var run = require(__dirname + "/operations.js");
 
 var app = express();
 
 app.engine("htm", mustacheExpress());
 app.set("view engine", "htm");
-app.set("views", __dirname + "\\views");
+app.set("views", __dirname + "/views");
 
 app.get("/", function(request, response){ response.render("index"); });
 app.get("/ping", function(request, response){ response.json({"alive" : true}); });
