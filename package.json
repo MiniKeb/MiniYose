@@ -1,7 +1,7 @@
 {
   "name": "MiniYose",
-  "version": "0.0.0",
-  "description": "Nothing but trying to play to Yose",
+  "version": "0.0.2",
+  "description": "Playing to YoseTheGame",
   "main": "web.js",
   "scripts": {
     "test": "grunt simplemocha"
@@ -11,7 +11,9 @@
     "url": "https://github.com/MiniKeb/MiniYose.git"
   },
   "keywords": [
-    "Yose"
+    "YoseTheGame",
+    "Node",
+    "Javascript"
   ],
   "author": "MiniKeb",
   "license": "BSD-2-Clause",
@@ -20,9 +22,11 @@
   },
   "homepage": "https://github.com/MiniKeb/MiniYose",
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
     "grunt-simple-mocha": "~0.4.0",
-    "grunt-contrib-watch": "~0.5.3"
+    "superagent": "^1.1.0"
   },
   "dependencies": {
     "express": "~3.4.8",

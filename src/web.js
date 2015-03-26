@@ -1,39 +1,22 @@
 // web.js
 var express = require("express");
-var logfmt = require("logfmt");
+var mustacheExpress = require("mustache-express");
+var run = require(__dirname + "\\operations.js");
+
 var app = express();
 
-app.use(logfmt.requestLogger());
+app.engine("htm", mustacheExpress());
+app.set("view engine", "htm");
+app.set("views", __dirname + "\\views");
 
-app.get('/', function(req, res) {
-  var html = '<html><head></head><body>Hello Yose <a id="repository-link" href="https://github.com/MiniKeb/MiniYose">Repository</a> <a id="contact-me-link" href="#">Contact Me</a> <a id="ping-challenge-link" href="/ping">Ping Me</a> </body></html>';
-  res.send(html);
+app.get("/", function(request, response){ response.render("index"); });
+app.get("/ping", function(request, response){ response.json({"alive" : true}); });
+app.get("/primeFactors", function(request, response){ 
+  var number = request.param("number");
+  var result = run.primeFactors(number);
+  response.json(result);
 });
 
-app.get('/ping', function(request, response){
-  response.contentType("application/json");
-  response.send('{ "alive" : true }')
-});
-
-app.get('/primeFactors', function(request, response){
-  var result = {
-    number: request.param("number")
-  };
-  
-  if (isNaN(result.number))
-  {
-    result.error = "not a number";
-  }else{
-    result.decomposition = [];
-    var remain = result.number;
-    while(remain > 1){
-      remain = remain / 2;
-      result.decomposition.push(2);
-    }
-  }
-  response.contentType("application/json");
-  response.send(result);
-});
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
