@@ -24,4 +24,9 @@ describe("primeFactors", function(){
 		expect(result).to.have.property("decomposition");
 		expect(result.decomposition).to.be.eql([787]);
 	});
+
+	it("should return 'too big number (>1e6)' as decomposition of 1000001", function(){
+		var result = run.primeFactors("1000001");
+		expect(result).to.have.property("error", "too big number (>1e6)");
+	});
 });
