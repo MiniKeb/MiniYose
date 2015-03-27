@@ -29,6 +29,16 @@ describe("primeFactors", function(){
 		var result = run.primeFactors("1000001");
 		expect(result).to.have.property("error", "too big number (>1e6)");
 	});
+
+	it("should return array of results as decomposition of [16, 15, Hello]", function(){
+		var result = run.primeFactors(["16", "15", "Hello"]);
+		expect(result).to.have.length(3);
+
+		expect(result[0].decomposition).to.be.eql([2, 2, 2, 2]);
+		expect(result[1].decomposition).to.be.eql([3, 5]);
+		expect(result[2]).to.have.property("error", "not a number");
+
+	})
 });
 
 describe("minesweeper", function(){

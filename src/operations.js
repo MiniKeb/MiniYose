@@ -1,4 +1,4 @@
-module.exports.primeFactors = function (input){
+function primeFactor(input){
   var result = {
     number: input
   };
@@ -31,6 +31,17 @@ module.exports.primeFactors = function (input){
 	}
   }
   return result; 
+}
+
+module.exports.primeFactors = function(input){
+	if (!Array.isArray(input))
+		return primeFactor(input);
+
+	var results = [];
+	for(var i in input){
+		results.push(primeFactor(input[i]));
+	}
+	return results;
 };
 
 module.exports.minesweeper = function(){
