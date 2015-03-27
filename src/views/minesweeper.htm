@@ -1,15 +1,25 @@
-<html>
-	<head></head>
-	<body>
-		<h1 id="title">Minesweeper</h1>
-		<table>
-			{{#each cells}}
-			<tr>
-				{{#each this}}
-				<td id="{{this}}">&nbsp;</td>
-				{{/each}}
-			</tr>
-			{{/each}}
-		</table>
-	</body>
-</html>
+<style>
+.minesweeper 
+{
+	border: 1px solid #111111;
+	border-collapse: collapse;
+}
+
+.minesweeper td
+{
+	border: 1px solid #111111;
+	background-color: #888888;
+}
+
+</style>
+
+<h1 id="title">Minesweeper</h1>
+<table class="minesweeper">
+	{{#each cells}}
+	<tr>
+		{{#each this}}
+		<td id="{{this}}">&nbsp;</td>
+		{{/each}}
+	</tr>
+	{{/each}}
+</table>

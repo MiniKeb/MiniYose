@@ -5,7 +5,7 @@ var run = require(__dirname + "/operations.js");
 
 var app = express();
 
-app.engine("htm", viewEngine());
+app.engine("htm", viewEngine({defaultLayout: "layout", extname: "htm", layoutsDir: __dirname + "/views"}));
 app.set("view engine", "htm");
 app.set("views", __dirname + "/views");
 
