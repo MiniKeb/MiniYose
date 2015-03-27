@@ -22,6 +22,7 @@ app.get("/minesweeper", function(request, response){
 });
 app.get("/astroport", function(request, response){
   response.render("astroport");
+  response.setHeader("Content-Type", "text/html");
 });
 
 
