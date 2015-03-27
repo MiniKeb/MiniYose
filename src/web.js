@@ -1,11 +1,11 @@
 // web.js
 var express = require("express");
-var mustacheExpress = require("mustache-express");
+var viewEngine = require("express-handlebars");
 var run = require(__dirname + "/operations.js");
 
 var app = express();
 
-app.engine("htm", mustacheExpress());
+app.engine("htm", viewEngine());
 app.set("view engine", "htm");
 app.set("views", __dirname + "/views");
 
@@ -15,6 +15,10 @@ app.get("/primeFactors", function(request, response){
   var number = request.param("number");
   var result = run.primeFactors(number);
   response.json(result);
+});
+app.get("/minesweeper", function(request, response){
+  var minesweeperData = { cells : run.minesweeper() };
+  response.render("minesweeper", minesweeperData);
 });
 
 
