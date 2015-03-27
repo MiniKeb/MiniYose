@@ -20,6 +20,9 @@ app.get("/minesweeper", function(request, response){
   var minesweeperData = { cells : run.minesweeper() };
   response.render("minesweeper", minesweeperData);
 });
+app.get("/astroport", function(request, response){
+  response.render("astroport");
+});
 
 
 var port = Number(process.env.PORT || 5000);
