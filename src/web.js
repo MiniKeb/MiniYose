@@ -16,6 +16,10 @@ app.get("/primeFactors", function(request, response){
   var result = run.primeFactors(number);
   response.json(result);
 });
+app.get("/primeFactors/ui", function(request, response){
+  response.render("primeFactorsUi");
+});
+
 app.get("/minesweeper", function(request, response){
   var minesweeperData = { cells : run.minesweeper() };
   response.render("minesweeper", minesweeperData);
