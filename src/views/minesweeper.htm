@@ -10,8 +10,22 @@
 	border: 1px solid #111111;
 	background-color: #888888;
 }
-
 </style>
+
+<script>
+function load(){
+	for(var rowIndex in document.grid){
+		for(var cellIndex in document.grid[rowIndex])
+		{
+			if(document.grid[rowIndex][cellIndex] == "bomb")
+			{
+				var id = "cell-"+ (rowIndex+1) +"x"+ (cellIndex+1);
+				document.getElementById(id).setAttribute("class", "lost");
+			}
+		}
+	}
+}
+</script>
 
 <h1 id="title">Minesweeper</h1>
 <table class="minesweeper">
