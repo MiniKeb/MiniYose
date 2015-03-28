@@ -14,12 +14,15 @@
 
 <script>
 function load(){
-	for(var rowIndex in document.grid){
-		for(var cellIndex in document.grid[rowIndex])
+	for(var rowIndex in document.grid)
+	{
+		line = parseInt(rowIndex);
+		for(var cellIndex in document.grid[line])
 		{
-			if(document.grid[rowIndex][cellIndex] == "bomb")
+			cell = parseInt(cellIndex);
+			if(document.grid[line][cell] == "bomb")
 			{
-				var id = "cell-"+ (rowIndex+1) +"x"+ (cellIndex+1);
+				var id = "cell-"+ (line+1) +"x"+ (cell+1);
 				document.getElementById(id).setAttribute("class", "lost");
 			}
 		}
