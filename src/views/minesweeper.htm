@@ -23,10 +23,14 @@ function load(){
 			if(document.grid[line][cell] == "bomb")
 			{
 				var id = "cell-"+ (line+1) +"x"+ (cell+1);
-				document.getElementById(id).setAttribute("class", "lost");
+				document.getElementById(id).setAttribute("onclick", "javascrit:boom(this);");
 			}
 		}
 	}
+}
+
+function boom(cell){
+	cell.setAttribute("class", "lost");
 }
 </script>
 
