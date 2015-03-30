@@ -1,3 +1,11 @@
+<script>
+function dockShip(){
+	var shipname = document.getElementById("ship").value;
+	document.getElementById("ship-1").innerHTML = shipname;
+}
+</script>
+
+
 <h1 id="astroport-name">Astroport</h1>
 
 <div id="gate-1">
@@ -12,3 +20,8 @@
 	Gate Three
 	<div id="ship-3">Ship C</div>
 </div>
+
+<form>
+	<input id="ship" type="text" class="u-full-width" placeholder="Ship ..." />
+	<button id="dock" type="button" class="button-primary" onclick="javascript:dockShip();">Dock</button>
+</form>
