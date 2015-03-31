@@ -28,6 +28,12 @@ app.get("/astroport", function(request, response){
   response.render("astroport");
   response.setHeader("Content-Type", "text/html");
 });
+app.get("fire/geek", function(request, response){
+  var width = request.param("width");
+  var map = request.param("map");
+  var result = run.fireGeek(width, map);
+  response.json(result);
+});
 
 
 var port = Number(process.env.PORT || 5000);
