@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var run = require("../src/operations.js");
+var run = require("../src/fire/fire.js");
 
 describe("fireGeek", function(){
 	it("should return a map of size 3", function(){

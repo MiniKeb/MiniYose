@@ -2,39 +2,28 @@
 var express = require("express");
 var viewEngine = require("express-handlebars");
 var run = require(__dirname + "/operations.js");
-
 var app = express();
+
+var routes = {
+  primeFactors : require(__dirname + "/primeFactors/route.js"),
+  minesweeper : require(__dirname + "/minesweeper/route.js"),
+  astroport : require(__dirname + "/astroport/route.js"),
+  fire: require(__dirname + "/fire/route.js")
+}
 
 app.engine("htm", viewEngine({defaultLayout: "layout", extname: "htm", layoutsDir: __dirname + "/views"}));
 app.set("view engine", "htm");
-app.set("views", __dirname + "/views");
+
+app.set("views", __dirname);
+
 
 app.get("/", function(request, response){ response.render("index"); });
 app.get("/ping", function(request, response){ response.json({"alive" : true}); });
-app.get("/primeFactors", function(request, response){ 
-  var number = request.param("number");
-  var result = run.primeFactors(number);
-  response.json(result);
-});
-app.get("/primeFactors/ui", function(request, response){
-  response.render("primeFactorsUi");
-});
 
-app.get("/minesweeper", function(request, response){
-  var minesweeperData = { cells : run.minesweeper() };
-  response.render("minesweeper", minesweeperData);
-});
-app.get("/astroport", function(request, response){
-  response.render("astroport");
-  response.setHeader("Content-Type", "text/html");
-});
-app.get("fire/geek", function(request, response){
-  var width = request.param("width");
-  var map = request.param("map");
-  var result = run.fireGeek(width, map);
-  response.json(result);
-});
-
+app.use("/primeFactors", routes.primeFactors);
+app.use("/minesweeper", routes.minesweeper);
+app.use("/astroport", routes.astroport);
+app.use("/fire", routes.fire);
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {

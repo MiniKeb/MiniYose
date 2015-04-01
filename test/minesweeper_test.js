@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var run = require("../src/operations.js");
+var run = require("../src/minesweeper/minesweeper.js");
 
 describe("minesweeper", function(){
 	it("should 8 rows with 8 cells", function(){

@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var run = require("../src/operations.js");
+var run = require("../src/primeFactors/primeFactors.js");
 
 describe("primeFactors", function(){
 	it("should return 'not a number' error with string parameter", function(){
