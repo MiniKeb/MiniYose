@@ -16,7 +16,7 @@ app.set("view engine", "htm");
 app.set("views", __dirname);
 
 
-app.get("/", function(request, response){ response.render("index"); });
+app.get("/", function(request, response){ response.render("views/index"); });
 app.get("/ping", function(request, response){ response.json({"alive" : true}); });
 
 app.use("/primeFactors", routes.primeFactors);
