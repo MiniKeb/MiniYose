@@ -8,7 +8,13 @@ router.get("/", function(request, response){
   response.json(result);
 });
 router.get("/ui", function(request, response){
-  response.render("primeFactors/views/primeFactorsUi");
+  	var number = request.param("number");
+  	var result = null;
+  	if (number !== undefined){
+		var primeFactor = run.primeFactors(number);
+		result = primeFactor.number +" = "+ primeFactor.decomposition.join(" x ");
+	}
+	response.render("primeFactors/views/primeFactorsUi", {result: result});
 });
 
 module.exports = router;
