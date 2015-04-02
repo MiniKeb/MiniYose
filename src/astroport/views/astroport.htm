@@ -10,7 +10,7 @@ function dockShip(){
 
 <div id="gate-1">
 	Gate One
-	<div id="ship-1">Ship A</div>
+	<div id="ship-1">{{ship}}</div>
 </div>
 <div id="gate-2">
 	Gate Two
@@ -21,7 +21,7 @@ function dockShip(){
 	<div id="ship-3">Ship C</div>
 </div>
 
-<form>
-	<input id="ship" type="text" class="u-full-width" placeholder="Ship ..." />
+<form method="GET">
+	<input id="ship" name="ship" type="text" class="u-full-width" placeholder="Shipname ..." />
 	<button id="dock" type="button" class="button-primary" onclick="javascript:dockShip();">Dock</button>
 </form>
