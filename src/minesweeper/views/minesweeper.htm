@@ -1,14 +1,27 @@
 <style>
 .minesweeper 
 {
-	border: 1px solid #111111;
+	border: 2px solid #888888;
 	border-collapse: collapse;
 }
 
 .minesweeper td
 {
-	border: 1px solid #111111;
-	background-color: #888888;
+	border: 2px solid #888888;
+	background-color: #DDDDDD;
+	width: 15px;
+	height: 15px;
+	padding: 0;
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.minesweeper td.lost{
+	background-color: #FF0000;
+}
+
+.minesweeper td.safe{
+	background-color: #FFFFFF;
 }
 </style>
 
@@ -16,21 +29,71 @@
 function load(){
 	for(var rowIndex in document.grid)
 	{
-		line = parseInt(rowIndex);
-		for(var cellIndex in document.grid[line])
+		var lineIx = parseInt(rowIndex);
+		for(var cellIndex in document.grid[lineIx])
 		{
-			cell = parseInt(cellIndex);
-			if(document.grid[line][cell] == "bomb")
-			{
-				var id = "cell-"+ (line+1) +"x"+ (cell+1);
-				document.getElementById(id).setAttribute("onclick", "javascrit:boom(this);");
+			var cellIx = parseInt(cellIndex);
+			var cell = getCell(cellIx, lineIx);
+
+			if(document.grid[lineIx][cellIx] == "empty" && cell.getAttribute("data-value") == null){
+				cell.setAttribute("data-value", "0");
+			}else if (document.grid[lineIx][cellIx] == "bomb"){
+				cell.setAttribute("data-value", "X");
+				var gridSize = {
+					width : document.grid[lineIx].length,
+					height : document.grid.length
+				};
+
+				incrementNeighbourgs(cellIx, lineIx, gridSize);
+			}
+
+			cell.setAttribute("onclick", "javascript:reveal(this);")
+		}
+	}
+}
+
+function incrementNeighbourgs(currentCellIndex, currentLineIndex, gridSize){
+	for(var y = -1; y <= 1; y++){
+		for(var x = -1; x <= 1; x++){
+			var isCurrent = (y == 0) && (x == 0);
+			if (!isCurrent){
+				var neighbourgLine = currentLineIndex + y;
+				var neighbourgCell = currentCellIndex + x;
+
+				var isInTable = neighbourgLine >= 0 && neighbourgCell >= 0
+					&& neighbourgLine < gridSize.height && neighbourgCell < gridSize.width;
+
+				if(isInTable){
+					var neighbourg = getCell(neighbourgCell, neighbourgLine);
+					incrementValue(neighbourg);
+				}
 			}
 		}
 	}
 }
 
-function boom(cell){
-	cell.setAttribute("class", "lost");
+function getCell(x, y){
+	return document.getElementById("cell-"+ (y+1) +"x"+ (x+1));
+}
+
+function incrementValue(cell){
+	var value = cell.getAttribute("data-value");
+	if(value == null){
+		value = "0"
+	}
+	if (value != "X"){
+		cell.setAttribute("data-value", parseInt(value)+1);
+	}
+}
+
+function reveal(cell){
+	var value = cell.getAttribute("data-value");
+	if (value == "X"){
+		cell.setAttribute("class", "lost");
+	}else{
+		cell.setAttribute("class", "safe");
+		cell.innerHTML = value;
+	}
 }
 </script>
 
