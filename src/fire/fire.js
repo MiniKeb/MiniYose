@@ -5,29 +5,26 @@ module.exports.fireGeek = function(widthTxt, flatMap){
 	var moves = [];
 	var positions = getPositions(map);
 
-	var firstStepNumberDy = positions.water.y - positions.plane.y;
-	for(var y = 0; y < firstStepNumberDy; y++){
-		moves.push({dx:0, dy:1});
-	}
-
-	var firstStepNumberDx = positions.water.x - positions.plane.x;
-	for(var x = 0; x < firstStepNumberDx; x++){
-		moves.push({dx:1, dy:0});
-	}
-
-	var secondStepNumberDy = positions.fire.y - positions.water.y;
-	for(var y = 0; y < secondStepNumberDy; y++){
-		moves.push({dx:0, dy:1});
-	}
-	
-	var secondStepNumberDx = positions.fire.x - positions.water.x;
-	for(var x = 0; x < secondStepNumberDx; x++){
-		moves.push({dx:1, dy:0});
-	}
+	addMoves(moves, positions.plane, positions.water);
+	addMoves(moves, positions.water, positions.fire);
 
 	return {
 		map: map,
 		moves : moves
+	}
+}
+
+function addMoves(moves, fromPos, toPos){
+	var horizontalCount = toPos.y - fromPos.y;
+	for(var y = 0; y < Math.abs(horizontalCount); y++){
+		var step = horizontalCount < 0 ? -1 : 1;
+		moves.push({dx:0, dy:step});
+	}
+
+	var verticalCount = toPos.x - fromPos.x;
+	for(var x = 0; x < Math.abs(verticalCount); x++){
+		var step = verticalCount < 0 ? -1 : 1;
+		moves.push({dx:step, dy:0});
 	}
 }
 
