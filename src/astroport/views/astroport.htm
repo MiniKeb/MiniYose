@@ -1,27 +1,70 @@
+<style type="text/css">
+.row
+{
+	margin-bottom: 1em;
+}
+
+.gate
+{
+	padding: 15px;
+	border: 1px solid #888888;
+	border-radius: 5px;
+}
+
+.free
+{
+	background-color: #CCFFCC;
+}
+
+.occupied
+{
+	background-color: #FFFCCC;
+}
+
+.info
+{
+	padding: 15px;
+	background-color: #99CCFF;
+	border-radius: 5px;
+}
+
+.hidden
+{
+	display: none;
+}
+</style>
 <script>
-function dockShip(){
-	var shipname = document.getElementById("ship").value;
-	document.getElementById("ship-1").innerHTML = shipname;
+function shipChanged(){
+	var infoSection = document.getElementById("info");
+	var cssClassAttr = infoSection.getAttribute("class");
+	var classes = cssClassAttr.split(" ");
+	var hiddenPosition = classes.indexOf("hidden");
+	if(hiddenPosition === -1)
+		classes.push("hidden");
+
+	infoSection.setAttribute("class", classes.join(" "));
 }
 </script>
 
-
 <h1 id="astroport-name">Astroport</h1>
 
-<div id="gate-1">
-	Gate One
-	<div id="ship-1">{{ship}}</div>
+<div class="row">
+	<div id="gate-1" class="four columns gate {{#if ship}}occupied{{else}}free{{/if}}">
+		Gate 1 : <span id="ship-1">{{ship}}</span>
+	</div>
+	<div id="gate-2" class="four columns gate">
+		Gate 2 : <span id="ship-2"></span>
+	</div>
+	<div id="gate-3" class="four columns gate">
+		Gate 3 : <span id="ship-3"></span>
+	</div>
 </div>
-<div id="gate-2">
-	Gate Two
-	<div id="ship-2">Ship B</div>
+<div class="row">
+	<form  action="/astroport" method="GET">
+		<input id="ship" name="ship" type="text" class="u-full-width" placeholder="Shipname ..." onkeyup="shipChanged()" />
+		<button id="dock" type="submit" class="button-primary">Dock</button>
+	</form>
 </div>
-<div id="gate-3">
-	Gate Three
-	<div id="ship-3">Ship C</div>
-</div>
-
-<form method="GET">
-	<input id="ship" name="ship" type="text" class="u-full-width" placeholder="Shipname ..." />
-	<button id="dock" type="button" class="button-primary" onclick="javascript:dockShip();">Dock</button>
-</form>
+<section id="info" class="row info {{#unless ship}}hidden{{/unless}}">
+	Ship is added to Gate 1.
+</section>
