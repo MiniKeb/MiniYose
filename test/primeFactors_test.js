@@ -44,5 +44,10 @@ describe("primeFactors", function(){
 		expect(result).to.have.property("error", "not a number");
 	});
 
+	it("should return 'not an integer > 1' error with '-8780' input", function(){
+		var result = run.primeFactors("-8780");
+		expect(result).to.have.property("error", "not an integer > 1");
+	});
+
 
 });

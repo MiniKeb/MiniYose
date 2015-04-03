@@ -6,6 +6,12 @@ function primeFactor(input){
 			error : "not a number" 
 		};
 
+	if (number <= 0)
+		return{
+			number : input,
+			error : "not an integer > 1"
+		}
+
 	if (number > 1000000)
 		return { 
 			number : input,

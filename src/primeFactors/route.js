@@ -13,9 +13,9 @@ router.get("/ui", function(request, response){
   	if (number !== undefined){
   		var primeFactor = run.primeFactors(number);
         if(primeFactor.error){
-            result = (isNaN(number)) 
-                ? primeFactor.number +" is "+ primeFactor.error
-                : primeFactor.error;
+            result = (number > 1000000) 
+                ? primeFactor.error
+                : primeFactor.number +" is "+ primeFactor.error;
         }else{
       		result = primeFactor.number +" = "+ primeFactor.decomposition.join(" x ");
         }
