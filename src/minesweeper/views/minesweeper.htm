@@ -43,8 +43,13 @@ function load(){
 					width : document.grid[lineIx].length,
 					height : document.grid.length
 				};
+				document.gridSize = gridSize;
 
-				incrementNeighbourgs(cellIx, lineIx, gridSize);
+				//incrementNeighbourgs(cellIx, lineIx, gridSize);
+				var neighbourgs = getNeighbourgs(cellIx, lineIx, gridSize);
+				for(var i = 0; i < neighbourgs.length; i++){
+					incrementValue(neighbourgs[i]);
+				}
 			}
 
 			cell.setAttribute("onclick", "javascript:reveal(this);")
@@ -72,6 +77,43 @@ function incrementNeighbourgs(currentCellIndex, currentLineIndex, gridSize){
 	}
 }
 
+function getPosition(cell){
+	var currentPosition = cell.id.split("-")[1].split("x");
+	var currentLineIndex = parseInt(currentPosition[0]) - 1;
+	var currentCellIndex = parseInt(currentPosition[1]) - 1;
+
+	return {
+		x: currentCellIndex,
+		y: currentLineIndex
+	};
+}
+
+function getNeighbourgs(cellIx, lineIx, gridSize){
+	var neighbourgs = [];
+
+	for(var y = -1; y <= 1; y++){
+		for(var x = -1; x <= 1; x++){
+			var isCurrent = (y == 0) && (x == 0);
+			if (!isCurrent){
+				var neighbourgLine = lineIx + y;
+				var neighbourgCell = cellIx + x;
+
+				var isInTable = neighbourgLine >= 0 
+					&& neighbourgCell >= 0
+					&& neighbourgLine < gridSize.height 
+					&& neighbourgCell < gridSize.width;
+
+				if(isInTable){
+					var neighbourg = getCell(neighbourgCell, neighbourgLine);
+					neighbourgs.push(neighbourg);
+				}
+			}
+		}
+	}
+
+	return neighbourgs;
+}
+
 function getCell(x, y){
 	return document.getElementById("cell-"+ (y+1) +"x"+ (x+1));
 }
@@ -92,7 +134,22 @@ function reveal(cell){
 		cell.setAttribute("class", "lost");
 	}else{
 		cell.setAttribute("class", "safe");
-		cell.innerHTML = (parseInt(value) > 0) ? value : "";		
+		if(parseInt(value) > 0){
+			cell.innerHTML = value;
+		}else{
+			cell.innerHTML = "";
+			//getNeighbourgs and reveal
+			var position = getPosition(cell);
+			var neighbourgs = getNeighbourgs(position.x, position.y, document.gridSize);
+			for(var i = 0; i < neighbourgs.length; i++){
+				var neighbourg = neighbourgs[i];
+				console.log(neighbourg.id);
+				var cssClass = neighbourg.getAttribute("class");
+				if (!cssClass){
+					reveal(neighbourg);
+				}
+			}
+		}
 	}
 }
 </script>
