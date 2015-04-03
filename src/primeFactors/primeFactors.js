@@ -1,36 +1,39 @@
 function primeFactor(input){
-  var result = {
-    number: input
-  };
-  
-  if (isNaN(result.number))
-  {
-    result.error = "not a number";
-  }
-  else
-  {
-  	var quotien = parseInt(result.number);
-  	if (quotien > 1000000)
-  	{
-  		result.error = "too big number (>1e6)";
-  	}
-  	else
-  	{
-	    result.decomposition = [];
-	    
-	    var diviseur = 2;
-	    while(diviseur != quotien){
-	    	if (quotien % diviseur == 0){
-	    		result.decomposition.push(diviseur);
-	    		quotien = quotien / diviseur;
-	    	}else{
-	    		diviseur++;
-	    	}
-	    }
-	    result.decomposition.push(diviseur);
+	var number = parseInt(input);
+	if (isNaN(number))
+		return { 
+			number : input,
+			error : "not a number" 
+		};
+
+	if (number > 1000000)
+		return { 
+			number : input,
+			error : "too big number (>1e6)" 
+		};
+
+	return { 
+		number: input,
+		decomposition : getDecomposition(number)
+	}; 
+}
+
+function getDecomposition(number){
+	var quotien = number;
+	var decomposition = [];
+	
+	var diviseur = 2;
+	while(diviseur != quotien){
+		if (quotien % diviseur == 0){
+			decomposition.push(diviseur);
+			quotien = quotien / diviseur;
+		}else{
+			diviseur++;
+		}
 	}
-  }
-  return result; 
+	decomposition.push(diviseur);
+
+	return decomposition;
 }
 
 module.exports.primeFactors = function(input){
