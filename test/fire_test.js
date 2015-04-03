@@ -12,7 +12,7 @@ describe("fireGeek", function(){
 		expect(result.map[2]).to.be.eql(".WF");
 	});
 
-	it("should return a plane's move to take water and put it on fire", function(){
+	it("plane should move to water and put it on fire", function(){
 		var result = run.fireGeek("3", "...P...WF");
 
 		expect(result).to.have.property("moves");
@@ -23,7 +23,7 @@ describe("fireGeek", function(){
 		expect(result.moves[2]).to.be.eql({dx: 1, dy: 0});
 	});
 
-	it("should return a negative plane's move to take water and put it on fire", function(){
+	it("plane should move back to water and put it on fire", function(){
 		var result = run.fireGeek("3", "......WPF");
 
 		expect(result).to.have.property("moves");
@@ -32,5 +32,18 @@ describe("fireGeek", function(){
 		expect(result.moves[0]).to.be.eql({dx: -1, dy: 0});
 		expect(result.moves[1]).to.be.eql({dx: 1, dy: 0});
 		expect(result.moves[2]).to.be.eql({dx: 1, dy: 0});
+	});
+
+	it.skip("plane shouldn't move to fire before water", function(){
+		var result = run.fireGeek("3", "......PFW");
+
+		expect(result).to.have.property("moves");
+		expect(result.moves).to.have.length(5);
+		
+		expect(result.moves[0]).to.be.eql({dx: 0, dy: -1});
+		expect(result.moves[1]).to.be.eql({dx: 1, dy: 0});
+		expect(result.moves[2]).to.be.eql({dx: 1, dy: 0});
+		expect(result.moves[3]).to.be.eql({dx: 0, dy: 1});
+		expect(result.moves[4]).to.be.eql({dx: -1, dy: 0});
 	});
 });
