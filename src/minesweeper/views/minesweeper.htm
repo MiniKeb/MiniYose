@@ -26,6 +26,20 @@
 </style>
 
 <script>
+window.onload = load;
+
+(function init(){
+	var size = 8;
+	document.grid = [];
+	for(var y = 0; y < size; y++){
+		document.grid.push([]);
+		for(var x = 0; x < size; x++){
+			var cellValue = Math.random() < 0.15 ? 'bomb' : 'empty';
+			document.grid[y].push(cellValue);
+		}
+	}
+})();
+
 function load(){
 	for(var rowIndex in document.grid)
 	{
@@ -143,7 +157,6 @@ function reveal(cell){
 			var neighbourgs = getNeighbourgs(position.x, position.y, document.gridSize);
 			for(var i = 0; i < neighbourgs.length; i++){
 				var neighbourg = neighbourgs[i];
-				console.log(neighbourg.id);
 				var cssClass = neighbourg.getAttribute("class");
 				if (!cssClass){
 					reveal(neighbourg);
