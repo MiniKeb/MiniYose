@@ -92,7 +92,7 @@ function reveal(cell){
 		cell.setAttribute("class", "lost");
 	}else{
 		cell.setAttribute("class", "safe");
-		cell.innerHTML = value;
+		cell.innerHTML = (parseInt(value) > 0) ? value : "";		
 	}
 }
 </script>
