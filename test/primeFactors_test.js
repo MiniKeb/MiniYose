@@ -37,6 +37,12 @@ describe("primeFactors", function(){
 		expect(result[0].decomposition).to.be.eql([2, 2, 2, 2]);
 		expect(result[1].decomposition).to.be.eql([3, 5]);
 		expect(result[2]).to.have.property("error", "not a number");
+	});
 
-	})
+	it("should return 'not a number' error with '3javascript' input", function(){
+		var result = run.primeFactors("3javascript");
+		expect(result).to.have.property("error", "not a number");
+	});
+
+
 });

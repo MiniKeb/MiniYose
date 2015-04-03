@@ -1,6 +1,6 @@
 function primeFactor(input){
 	var number = parseInt(input);
-	if (isNaN(number))
+	if (isNaN(input))
 		return { 
 			number : input,
 			error : "not a number" 
