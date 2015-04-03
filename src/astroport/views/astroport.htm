@@ -61,7 +61,7 @@ function shipChanged(){
 </div>
 <div class="row">
 	<form  action="/astroport" method="GET">
-		<input id="ship" name="ship" type="text" class="u-full-width" placeholder="Shipname ..." onkeyup="shipChanged()" />
+		<input id="ship" name="ship" type="text" class="u-full-width" placeholder="Shipname ..." onkeyup="shipChanged()" onchange="shipChanged()" />
 		<button id="dock" type="submit" class="button-primary">Dock</button>
 	</form>
 </div>
