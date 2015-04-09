@@ -20,6 +20,10 @@
 	background-color: #FF0000;
 }
 
+.minesweeper td.suspect{
+	background-color: #FFF000;
+}
+
 .minesweeper td.safe{
 	background-color: #FFFFFF;
 }
@@ -145,7 +149,12 @@ function incrementValue(cell){
 function reveal(cell){
 	var value = cell.getAttribute("data-value");
 	if (value == "X"){
-		cell.setAttribute("class", "lost");
+		var isSuspectMode = document.getElementById("suspect-mode").checked;
+		if (isSuspectMode){
+			cell.setAttribute("class", "suspect");
+		} else {
+			cell.setAttribute("class", "lost");
+		}
 	}else{
 		cell.setAttribute("class", "safe");
 		if(parseInt(value) > 0){
@@ -168,6 +177,7 @@ function reveal(cell){
 </script>
 
 <h1 id="title">Minesweeper</h1>
+<label for="suspect-mode">Suspect Mode</label><input type="checkbox" id="suspect-mode" />
 <table class="minesweeper">
 	{{#each cells}}
 	<tr>
