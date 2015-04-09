@@ -1,6 +1,7 @@
 // web.js
 var express = require("express");
 var viewEngine = require("express-handlebars");
+var bodyParser = require("body-parser");
 var app = express();
 
 var routes = {
@@ -12,8 +13,9 @@ var routes = {
 
 app.engine("htm", viewEngine({defaultLayout: "layout", extname: "htm", layoutsDir: __dirname + "/views"}));
 app.set("view engine", "htm");
-
 app.set("views", __dirname);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get("/", function(request, response){ response.render("views/index"); });
