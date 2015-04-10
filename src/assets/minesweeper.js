@@ -15,54 +15,28 @@ window.onload = load;
 })();
 
 function load(){
-	for(var rowIndex in document.grid)
-	{
-		var lineIx = parseInt(rowIndex);
-		for(var cellIndex in document.grid[lineIx])
-		{
-			var cellIx = parseInt(cellIndex);
-			var cell = getCell(cellIx, lineIx);
-
-			if(document.grid[lineIx][cellIx] == "empty" && cell.getAttribute("data-value") == null){
-				cell.setAttribute("data-value", "0");
-			}else if (document.grid[lineIx][cellIx] == "bomb"){
-				cell.setAttribute("data-value", "X");
-				var gridSize = {
-					width : document.grid[lineIx].length,
-					height : document.grid.length
-				};
-				document.gridSize = gridSize;
-
-				//incrementNeighbourgs(cellIx, lineIx, gridSize);
-				var neighbourgs = getNeighbourgs(cellIx, lineIx, gridSize);
-				for(var i = 0; i < neighbourgs.length; i++){
-					incrementValue(neighbourgs[i]);
-				}
-			}
-
-			cell.setAttribute("onclick", "javascript:reveal(this);")
-		}
-	}
+	var soluceGrid = getSoluceGrid(document.grid);
+	var table = document.getElementById("minesweeper-table");
+	table.onclick = function(event){
+		gridClicked(event, table, soluceGrid);
+	};
 }
 
-function incrementNeighbourgs(currentCellIndex, currentLineIndex, gridSize){
-	for(var y = -1; y <= 1; y++){
-		for(var x = -1; x <= 1; x++){
-			var isCurrent = (y == 0) && (x == 0);
-			if (!isCurrent){
-				var neighbourgLine = currentLineIndex + y;
-				var neighbourgCell = currentCellIndex + x;
+function gridClicked(event, table, soluce){
+	event = event || window.event;
+	var target = event.target || event.srcElement;
 
-				var isInTable = neighbourgLine >= 0 && neighbourgCell >= 0
-					&& neighbourgLine < gridSize.height && neighbourgCell < gridSize.width;
-
-				if(isInTable){
-					var neighbourg = getCell(neighbourgCell, neighbourgLine);
-					incrementValue(neighbourg);
-				}
-			}
+	while(target != table) { 
+		if (target.nodeName == 'TD') { 
+			cellClicked(target, soluce);
 		}
-	}
+    	target = target.parentNode;
+  	}
+}
+
+function cellClicked(cell, soluce){
+	console.log(soluce);
+	reveal(cell, soluce);
 }
 
 function getPosition(cell){
@@ -75,6 +49,62 @@ function getPosition(cell){
 		y: currentLineIndex
 	};
 }
+
+function getSoluceGrid(sourceGrid){
+	var soluceGrid = [];
+
+	for(var rowIndex in sourceGrid)
+	{
+		var lineIx = parseInt(rowIndex);
+		soluceGrid.push([]);
+		for(var cellIndex in sourceGrid[lineIx])
+		{
+			var cellIx = parseInt(cellIndex);
+			var position = {
+				y: lineIx,
+				x: cellIx
+			};
+
+			soluceGrid[position.y].push(getSoluceValue(sourceGrid, position));
+		}
+	}
+
+	return soluceGrid;
+}
+
+function getSoluceValue(grid, position){
+	var gridSize = {
+		width: grid[0].length,
+		height: grid.length
+	};
+
+	if(grid[position.y][position.x] == "bomb")
+		return "X";
+
+	var value = 0;
+
+	for(var y = -1; y <= 1; y++){
+		for(var x = -1; x <= 1; x++){
+			var isCurrent = (y == 0) && (x == 0);
+			if (!isCurrent){
+				var neighbourgLine = position.y + y;
+				var neighbourgCell = position.x + x;
+
+				var isInTable = neighbourgLine >= 0 
+					&& neighbourgCell >= 0
+					&& neighbourgLine < gridSize.height 
+					&& neighbourgCell < gridSize.width;
+
+				if(isInTable && grid[neighbourgLine][neighbourgCell] == "bomb"){
+					value++;
+				}
+			}
+		}
+	}
+
+	return value;
+}
+
 
 function getNeighbourgs(cellIx, lineIx, gridSize){
 	var neighbourgs = [];
@@ -102,6 +132,7 @@ function getNeighbourgs(cellIx, lineIx, gridSize){
 	return neighbourgs;
 }
 
+
 function getCell(x, y){
 	return document.getElementById("cell-"+ (y+1) +"x"+ (x+1));
 }
@@ -116,8 +147,13 @@ function incrementValue(cell){
 	}
 }
 
-function reveal(cell){
-	var value = cell.getAttribute("data-value");
+function reveal(cell, soluceGrid){
+	var gridSize = {
+		width: soluceGrid[0].length,
+		height: soluceGrid.length
+	};
+	var position = getPosition(cell);
+	var value = soluceGrid[position.y][position.x];
 	if (value == "X"){
 		var isSuspectMode = document.getElementById("suspect-mode").checked;
 		if (isSuspectMode){
@@ -131,14 +167,13 @@ function reveal(cell){
 			cell.innerHTML = value;
 		}else{
 			cell.innerHTML = "";
-			//getNeighbourgs and reveal
 			var position = getPosition(cell);
-			var neighbourgs = getNeighbourgs(position.x, position.y, document.gridSize);
+			var neighbourgs = getNeighbourgs(position.x, position.y, gridSize);
 			for(var i = 0; i < neighbourgs.length; i++){
 				var neighbourg = neighbourgs[i];
 				var cssClass = neighbourg.getAttribute("class");
 				if (!cssClass){
-					reveal(neighbourg);
+					reveal(neighbourg, soluceGrid);
 				}
 			}
 		}
