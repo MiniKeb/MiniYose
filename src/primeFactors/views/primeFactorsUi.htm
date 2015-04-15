@@ -4,4 +4,9 @@
 	<input id="number" name="number" type="text" class="u-full-width" placeholder="Set a number..." />
 	<button id="go" type="submit" class="button-primary">Calculate</button>
 	<div id="result">{{result}}</div>
+	<ol id="results">
+		{{#each results}}
+		<li>{{.}}</li>
+		{{/each}}
+	</ol>
 </form>

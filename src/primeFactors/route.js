@@ -11,20 +11,32 @@ router.get("/ui", process)
 router.post("/ui", process);
 
 function process(request, response){
+    try{
     var number = request.param("number");
-    var result = null;
+    var results = [];
     if (number !== undefined){
-        var primeFactor = run.primeFactors(number);
-        if(primeFactor.error){
-            result = (number > 1000000) 
-                ? primeFactor.error
-                : primeFactor.number +" is "+ primeFactor.error;
-        }else{
-            result = primeFactor.number +" = "+ primeFactor.decomposition.join(" x ");
+        number = number.split(", ");
+        var primeFactors = run.primeFactors(number);
+        for(var i in primeFactors){
+            results.push(getResult(primeFactors[i]));
         }
     }
 
-    response.render("primeFactors/views/primeFactorsUi", {result: result});
+    var data = results.length > 1 ? { results: results } : { result: results[0] };
+    response.render("primeFactors/views/primeFactorsUi", data);
+    }catch(e){
+        console.log(e);
+    }
+}
+
+function getResult(primeFactor){
+    if(primeFactor.error){
+        return (primeFactor.number > 1000000) 
+            ? primeFactor.error
+            : primeFactor.number +" is "+ primeFactor.error;
+    }else{
+        return primeFactor.number +" = "+ primeFactor.decomposition.join(" x ");
+    }
 }
 
 module.exports = router;

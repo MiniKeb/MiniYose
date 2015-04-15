@@ -1,6 +1,5 @@
 var expect = require('expect.js');
 var run = require("../src/minesweeper/minesweeper.js");
-var cli = require("../src/assets/minesweeper.js");
 
 describe("minesweeper", function(){
 	it("should 8 rows with 8 cells", function(){
