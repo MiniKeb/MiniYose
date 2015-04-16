@@ -11,7 +11,6 @@ router.get("/ui", process)
 router.post("/ui", process);
 
 function process(request, response){
-    try{
     var number = request.param("number");
     var results = [];
     if (number !== undefined){
@@ -24,9 +23,6 @@ function process(request, response){
 
     var data = results.length > 1 ? { results: results } : { result: results[0] };
     response.render("primeFactors/views/primeFactorsUi", data);
-    }catch(e){
-        console.log(e);
-    }
 }
 
 function getResult(primeFactor){
