@@ -22,7 +22,7 @@ function process(request, response){
     }
 
     var data = results.length > 1 ? { results: results } : { result: results[0] };
-    //var data = { results: results }
+    data.previousDecomposition = request.param("remember-decomposition");
     response.render("primeFactors/views/primeFactorsUi", data);
 }
 
