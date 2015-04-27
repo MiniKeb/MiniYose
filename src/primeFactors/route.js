@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var run = require(__dirname + "/primeFactors.js");
+var fs = require("fs");
 
 router.get("/", function(request, response){ 
     var number = request.param("number");
@@ -21,8 +22,24 @@ function process(request, response){
         }
     }
 
+    var lastDecomposition = {
+        fileName : "memory.txt",
+        read : function(){
+            if (!fs.existsSync(lastDecomposition.fileName))
+                return null;
+
+            return fs.readFileSync(lastDecomposition.fileName);
+        },
+        write : function(text){
+            fs.writeFileSync(lastDecomposition.fileName, text);
+        }
+    }
+
     var data = results.length > 1 ? { results: results } : { result: results[0] };
-    data.previousDecomposition = request.param("remember-decomposition");
+
+    data.previousDecomposition = lastDecomposition.read();
+    lastDecomposition.write(results.join(", "));
+
     response.render("primeFactors/views/primeFactorsUi", data);
 }
 
