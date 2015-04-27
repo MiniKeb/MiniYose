@@ -49,5 +49,9 @@ describe("primeFactors", function(){
 		expect(result).to.have.property("error", "not an integer > 1");
 	});
 
-
+	it("should return [II, III, V, VII] as decomposition of CCX", function(){
+		var result = run.primeFactors("CCX");
+		expect(result).to.have.property("decomposition");
+		expect(result.decomposition).to.be.eql(["II", "III", "V", "VII"]);
+	});
 });

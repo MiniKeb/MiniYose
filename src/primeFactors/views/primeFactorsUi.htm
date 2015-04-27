@@ -2,11 +2,15 @@
 <form class="six columns" action="/primeFactors/ui" method="POST">
 	<label id="invitation" for="number">Input a number to obtain the prime factors.</label>
 	<input id="number" name="number" type="text" class="u-full-width" placeholder="Set a number..." />
+	<!-- <input id="remember-decomposition" type="hidden" name="memory" value="{{results}}" /> -->
 	<button id="go" type="submit" class="button-primary">Calculate</button>
-	<div id="result">{{result}}</div>
+	<div id="result">{{#if result}}{{result}}{{/if}}</div>
 	<ol id="results">
 		{{#each results}}
 		<li>{{.}}</li>
 		{{/each}}
 	</ol>
+	<!-- <div id="last-decomposition">
+		{{previous}}
+	</div> -->
 </form>
