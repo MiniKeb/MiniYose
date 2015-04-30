@@ -46,4 +46,17 @@ describe("fireGeek", function(){
 		expect(result.moves[3]).to.be.eql({dx: 0, dy: 1});
 		expect(result.moves[4]).to.be.eql({dx: -1, dy: 0});
 	});
+
+	it("plane should move to closest water even if there is no fire", function(){
+		var result = run.fireGeek("5", "W..P......W....");
+
+		expect(result).to.have.property("moves");
+		console.log(result.map);
+		expect(result.moves).to.have.length(3);
+
+
+		expect(result.moves[0]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[1]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[2]).to.be.eql({dx: -1, dy: 0});
+	});
 });

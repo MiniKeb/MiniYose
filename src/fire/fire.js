@@ -2,20 +2,30 @@ module.exports.fireGeek = function(widthTxt, flatMap){
 	var width = parseInt(widthTxt);
 	var map = getMap(width, flatMap);
 
-	var moves = [];
 	var positions = getPositions(map);
 
 	// Ok, that's odd but I need a clone and I don't wanna go all over several times.
 	var grids = buildGrids(width, flatMap);
-	var movesToWater = getTakeWater(grids[0], positions.plane, positions.water);
-	var movesToFire = getExtinguishFire(grids[1], positions.water, positions.fire);
 
-	addMoves(moves, positions.plane, positions.water);
-	addMoves(moves, positions.water, positions.fire);
+	var best = positions.water[0];
+	var bestScore = calculateScore(positions.plane, best)
+	for(var w = 0; w < positions.water; w++){
+		var score = calculateScore(positions.plane, positions.water[w]);
+		if(bestScore > score){
+			best = positions.water[w];
+			bestScore = score;
+		}
+	}
+
+	var moves = getTakeWater(grids[0], positions.plane, best);
+	if(positions.fire)
+	{
+		moves = moves.concat(getExtinguishFire(grids[1], best, positions.fire));
+	}
 
 	return {
 		map: map,
-		moves : movesToWater.concat(movesToFire)
+		moves : moves
 	}
 }
 
@@ -186,10 +196,6 @@ function isSamePosition(firstPos, secondPos){
 	return firstPos.x == secondPos.x && firstPos.y == secondPos.y;
 }
 
-
-
-
-
 function addMoves(moves, fromPos, toPos){
 	var horizontalCount = toPos.y - fromPos.y;
 	for(var y = 0; y < Math.abs(horizontalCount); y++){
@@ -222,7 +228,11 @@ function getMap(width, flatMap)
 
 function getPositions(map)
 {
-	var positions = {};
+	var positions = {
+		plane: undefined,
+		water: [],
+		fire: undefined
+	};
 	for(var y = 0; y < map.length; y++)
 	{
 		for(var x = 0; x < map[y].length; x++)
@@ -232,7 +242,7 @@ function getPositions(map)
 			{
 				case "P" : positions.plane = {x : x, y: y};
 					break;
-				case "W" : positions.water = {x : x, y: y};
+				case "W" : positions.water.push({x : x, y: y});
 					break;
 				case "F" : positions.fire = {x : x, y: y};
 					break;
