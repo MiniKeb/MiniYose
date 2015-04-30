@@ -8,9 +8,13 @@ module.exports.fireGeek = function(widthTxt, flatMap){
 	var grids = buildGrids(width, flatMap);
 
 	var best = positions.water[0];
-	var bestScore = calculateScore(positions.plane, best)
+	var bestScore = calculateScore(positions.plane, best);
+	if(positions.fire)
+		bestScore += calculateScore(best, positions.fire);
 	for(var w = 0; w < positions.water; w++){
 		var score = calculateScore(positions.plane, positions.water[w]);
+		if(positions.fire)
+			score += calculateScore(positions.water[w], positions.fire);
 		if(bestScore > score){
 			best = positions.water[w];
 			bestScore = score;

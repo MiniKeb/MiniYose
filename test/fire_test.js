@@ -51,12 +51,25 @@ describe("fireGeek", function(){
 		var result = run.fireGeek("5", "W..P......W....");
 
 		expect(result).to.have.property("moves");
-		console.log(result.map);
 		expect(result.moves).to.have.length(3);
 
 
 		expect(result.moves[0]).to.be.eql({dx: -1, dy: 0});
 		expect(result.moves[1]).to.be.eql({dx: -1, dy: 0});
 		expect(result.moves[2]).to.be.eql({dx: -1, dy: 0});
+	});
+
+	it("plane should take the best path", function(){
+		var result = run.fireGeek("5", "W...PF........W");
+
+		expect(result).to.have.property("moves");
+		expect(result.moves).to.have.length(5);
+
+
+		expect(result.moves[0]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[1]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[2]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[3]).to.be.eql({dx: -1, dy: 0});
+		expect(result.moves[4]).to.be.eql({dx: 0, dy: 1});
 	});
 });
