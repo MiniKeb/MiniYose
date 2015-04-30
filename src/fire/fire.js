@@ -5,14 +5,190 @@ module.exports.fireGeek = function(widthTxt, flatMap){
 	var moves = [];
 	var positions = getPositions(map);
 
+	// Ok, that's odd but I need a clone and I don't wanna go all over several times.
+	var grids = buildGrids(width, flatMap);
+	var movesToWater = getTakeWater(grids[0], positions.plane, positions.water);
+	var movesToFire = getExtinguishFire(grids[1], positions.water, positions.fire);
+
 	addMoves(moves, positions.plane, positions.water);
 	addMoves(moves, positions.water, positions.fire);
 
 	return {
 		map: map,
-		moves : moves
+		moves : movesToWater.concat(movesToFire)
 	}
 }
+
+function buildGrids(width, flatMap){
+	var grids = [];
+
+	for(var i = 0; i < 2; i++){
+		var grid = [];
+		var y = 0;
+
+		while(y * width < flatMap.length){
+			grid.push([]);
+			grid[y] = [];
+
+			for(var x = 0; x < width; x++){
+				var node = {
+					parent: null,
+					value : flatMap[(y * width) + x],
+					position : {x: x, y: y},
+					isVisited : false,
+
+					isFire : function(){ return this.value == "F" }
+				}
+				grid[y].push(node);
+			}
+
+			y++;
+		}
+		
+		grids.push(grid);
+	}
+	return grids;
+}
+
+function getTakeWater(map, startPos, endPos){
+	var currentNode = map[startPos.y][startPos.x];
+	currentNode.isVisited = true;
+
+	while(!isSamePosition(currentNode.position, endPos)){
+		var bestNeighbourg = {
+			node: null,
+			score: 0
+		};
+
+		var neighbourgs = getNeighbourgs(map, currentNode.position);
+		for(var i = 0; i < neighbourgs.length; i++){
+			var node = neighbourgs[i];
+			if(!node.isFire() && !node.isVisited){
+				var score = calculateScore(node.position, endPos);
+				if(bestNeighbourg.node == null || bestNeighbourg.score > score){
+					bestNeighbourg.node = node;
+					bestNeighbourg.score = score;
+				}
+				node.isVisited = true;
+			}
+		}
+
+		bestNeighbourg.node.parent = currentNode;
+		currentNode = bestNeighbourg.node;
+	}
+
+	var moves = [];
+	var prevPosition = null;
+
+	while(currentNode.parent != null){
+		if(prevPosition != null){
+			moves.push({
+				dx: prevPosition.x - currentNode.position.x,
+				dy: prevPosition.y - currentNode.position.y
+			});
+		}
+		prevPosition = currentNode.position;
+		currentNode = currentNode.parent;
+	}
+
+	moves.push({
+		dx: prevPosition.x - currentNode.position.x,
+		dy: prevPosition.y - currentNode.position.y
+	});
+
+	return reverse(moves);
+}
+
+function getExtinguishFire(map, startPos, endPos){
+	var currentNode = map[startPos.y][startPos.x];
+	currentNode.isVisited = true;
+
+	while(!isSamePosition(currentNode.position, endPos)){
+		var bestNeighbourg = {
+			node: null,
+			score: 0
+		};
+
+		var neighbourgs = getNeighbourgs(map, currentNode.position);
+		for(var i = 0; i < neighbourgs.length; i++){
+			var node = neighbourgs[i];
+			if(!node.isVisited){
+				var score = calculateScore(node.position, endPos);
+				if(bestNeighbourg.node == null || bestNeighbourg.score > score){
+					bestNeighbourg.node = node;
+					bestNeighbourg.score = score;
+				}
+				node.isVisited = true;
+			}
+		}
+
+		bestNeighbourg.node.parent = currentNode;
+		currentNode = bestNeighbourg.node;
+	}
+
+	var moves = [];
+	var prevPosition = null;
+
+	while(currentNode.parent != null){
+		if(prevPosition != null){
+			moves.push({
+				dx: prevPosition.x - currentNode.position.x,
+				dy: prevPosition.y - currentNode.position.y
+			});
+		}
+		prevPosition = currentNode.position;
+		currentNode = currentNode.parent;
+	}
+
+	moves.push({
+		dx: prevPosition.x - currentNode.position.x,
+		dy: prevPosition.y - currentNode.position.y
+	});
+
+	return reverse(moves);
+}
+
+function reverse(array){
+	var reversed = [];
+	for(var i = array.length - 1; i >= 0; i--){
+		reversed.push(array[i]);
+	}
+	return reversed;
+}
+
+function getNeighbourgs(map, position, rejectFunc){
+	var neighbourgs = [];
+	
+	var north = map[position.y-1] != undefined ? map[position.y-1][position.x] : undefined;
+	if(north)
+		neighbourgs.push(north);
+
+	var east = map[position.y][position.x+1];
+	if (east)
+		neighbourgs.push(east);
+
+	var south = map[position.y+1] != undefined ? map[position.y+1][position.x] : undefined;
+	if (south)
+		neighbourgs.push(south);
+
+	var west = map[position.y][position.x-1];
+	if (west)
+		neighbourgs.push(west);
+
+	return neighbourgs;
+}
+
+function calculateScore(firstPos, secondPos){
+	return Math.abs(firstPos.x - secondPos.x) + Math.abs(firstPos.y - secondPos.y);
+}
+
+function isSamePosition(firstPos, secondPos){
+	return firstPos.x == secondPos.x && firstPos.y == secondPos.y;
+}
+
+
+
+
 
 function addMoves(moves, fromPos, toPos){
 	var horizontalCount = toPos.y - fromPos.y;
@@ -28,6 +204,7 @@ function addMoves(moves, fromPos, toPos){
 	}
 }
 
+
 function getMap(width, flatMap)
 {
 	var map = [];
@@ -41,6 +218,7 @@ function getMap(width, flatMap)
 
 	return map;
 }
+
 
 function getPositions(map)
 {
