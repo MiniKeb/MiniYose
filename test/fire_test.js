@@ -72,4 +72,11 @@ describe("fireGeek", function(){
 		expect(result.moves[3]).to.be.eql({dx: -1, dy: 0});
 		expect(result.moves[4]).to.be.eql({dx: 0, dy: 1});
 	});
+
+	it("plane should take the best path", function(){
+		var result = run.fireGeek("11", ".............W..P...W........F...");
+
+		expect(result).to.have.property("moves");
+		expect(result.moves).to.have.length(7);
+	});
 });

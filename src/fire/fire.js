@@ -11,10 +11,12 @@ module.exports.fireGeek = function(widthTxt, flatMap){
 	var bestScore = calculateScore(positions.plane, best);
 	if(positions.fire)
 		bestScore += calculateScore(best, positions.fire);
-	for(var w = 0; w < positions.water; w++){
+
+	for(var w = 0; w < positions.water.length; w++){
 		var score = calculateScore(positions.plane, positions.water[w]);
 		if(positions.fire)
 			score += calculateScore(positions.water[w], positions.fire);
+		
 		if(bestScore > score){
 			best = positions.water[w];
 			bestScore = score;
