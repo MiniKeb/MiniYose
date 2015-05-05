@@ -3,9 +3,77 @@
 		<meta charset="utf-8" />
 		<title>Welcome at MiniYose</title>
 		<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
-		<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/query/1.3.2/jquery.min.js"></script>-->
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	</head>
 	<body>
+		<style>
+			body{
+				margin: 0;
+			}
+			
+			header{
+				background-color: #222222;
+				color: #68A343;
+				height: 100px;
+				margin-bottom: 1.5em;
+			}
+			
+			header h1{
+				padding: 20px;
+				margin: 0;
+				width: auto;
+				float: left;
+			}
+			
+			.externalbar-list{
+				float: right;
+				list-style-type: none;
+				text-align: center;
+				height: 100%;
+				margin: 0;
+			}
+			
+			.externalbar-item{
+				margin: 0;
+				float: left;
+				font-size: 2em;
+				margin: 0 10px 0 10px;
+				height: 100%;
+			}
+			
+			.externalbar-item a{
+				color: #68A343;
+				display: inline-block;
+				width: 50px;
+				height: 100%;
+			}
+			
+			.externalbar-item a:hover{
+				background-color: #68A343;
+				color: #222222;
+			}
+			
+			.externalbar-item i{
+				line-height: 100px;				
+			}
+			
+			.content{
+				padding-left: 1em;
+				padding-right: 1em;
+			}
+			
+		</style>
+		<header class="row">
+			<h1>Hello Yose</h1>
+			<div class="externalbar">
+				<ul class="externalbar-list">
+					<li class="externalbar-item"><a id="repository-link" href="https://github.com/MiniKeb/MiniYose"><i class="fa fa-github"></i></a></li>
+					<li class="externalbar-item"><a id="contact-me-link" href="#"><i class="fa fa-envelope"></i></a></li>
+				</ul>
+			</div>
+		</header>
+		<div class="content">
 		{{{body}}}
+		</div>
 	</body>
 </html>
