@@ -162,25 +162,26 @@ function reveal(cell, soluceGrid){
 	};
 	var position = getPosition(cell);
 	var value = soluceGrid[position.y][position.x];
-	if (value == "X"){
-		var isSuspectMode = document.getElementById("suspect-mode").checked;
-		if (isSuspectMode){
-			cell.setAttribute("class", "suspect");
-		} else {
+	var isSuspectMode = document.getElementById("suspect-mode").checked;
+	if (isSuspectMode){
+		cell.setAttribute("class", "suspect");
+	} else {
+		if (value == "X"){
 			cell.setAttribute("class", "lost");
-		}
-	}else{
-		cell.setAttribute("class", "safe");
-		if(parseInt(value) > 0){
-			cell.innerHTML = value;
+			
 		}else{
-			cell.innerHTML = "";
-
-			applyOnNeighbourgs(position, gridSize, function(neighbourgPosition){
-				var current = getCell(neighbourgPosition);
-				if(!current.getAttribute("class"))
-					reveal(current, soluceGrid);
-			});
+			cell.setAttribute("class", "safe");
+			if(parseInt(value) > 0){
+				cell.innerHTML = value;
+			}else{
+				cell.innerHTML = "";
+	
+				applyOnNeighbourgs(position, gridSize, function(neighbourgPosition){
+					var current = getCell(neighbourgPosition);
+					if(!current.getAttribute("class"))
+						reveal(current, soluceGrid);
+				});
+			}
 		}
 	}
 }
